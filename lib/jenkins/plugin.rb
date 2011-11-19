@@ -111,16 +111,13 @@ module Jenkins
       @peer.getWrapper().getShortName()
     end
 
-    # Called once when Jenkins first initializes this plugin
-    # currently does nothing, but plugin startup hooks would
-    # go here.
+    # Called once when Jenkins first initializes this plugin.
     def start
       @start.call()
     end
 
-    # Called one by Jenkins (via RubyPlugin) when this plugin
-    # is shut down. Currently this does nothing, but plugin
-    # shutdown hooks would go here.
+    # Called once by Jenkins (via RubyPlugin) when this plugin
+    # is shut down.
     def stop
       @stop.call()
     end
@@ -161,6 +158,16 @@ module Jenkins
       # TODO: can we access to Jenkins console logger?
       puts "Trying to load models from #{path}"
       load_file_in_dir(path)
+    end
+
+    # Plugin start hook. Only one hook is currently supported.
+    def on_start(&block)
+      @start = block.to_proc
+    end
+    
+    # Plugin stop hook. Only one hook is currently supported.
+    def on_stop(&block)
+      @start = block.to_proc
     end
 
     private
